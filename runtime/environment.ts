@@ -3,24 +3,40 @@ import type { RuntimeValue } from "./values"
 export default class Environment {
 	private parent?: Environment
 	private variables: Map<string, RuntimeValue>
+	private constants: Set<string>
 
 	constructor(parent?: Environment) {
 		this.parent = parent
 		this.variables = new Map()
+		this.constants = new Set()
 	}
 
-	public declareVariable(name: string, value: RuntimeValue): RuntimeValue {
+	public declareVariable(
+		name: string,
+		value: RuntimeValue,
+		constant: boolean,
+	): RuntimeValue {
 		// TODO: check parent declaration too
 		if (this.variables.has(name)) {
 			throw new Error(`Variable ${name} already declared`)
 		}
 
 		this.variables.set(name, value)
+
+		if (constant) {
+			this.constants.add(name)
+		}
+
 		return value
 	}
 
 	public assignVariable(name: string, value: RuntimeValue): RuntimeValue {
 		const environment = this.resolve(name)
+
+		if (environment.constants.has(name)) {
+			throw new Error(`Cannot reassign to constant ${name}`)
+		}
+
 		environment.variables.set(name, value)
 
 		return value

@@ -7,10 +7,10 @@ import Parser from "./src/parser"
 async function repl() {
 	const parser = new Parser()
 	const env = new Environment()
-	env.declareVariable("x", makeNumber(100))
-	env.declareVariable("true", makeBoolean())
-	env.declareVariable("false", makeBoolean(false))
-	env.declareVariable("null", makeNull())
+	env.declareVariable("x", makeNumber(100), false)
+	env.declareVariable("true", makeBoolean(), true)
+	env.declareVariable("false", makeBoolean(false), true)
+	env.declareVariable("null", makeNull(), true)
 
 	console.log("\nRepl v0.1.0")
 

@@ -13,6 +13,7 @@ export enum TokenType {
 
 	// Operators, Grouping
 	Equals = "Equals",
+	Semicolon = "Semicolon",
 	OpenParen = "OpenParen",
 	CloseParen = "CloseParen",
 	BinaryOperator = "BinaryOperator",
@@ -20,10 +21,12 @@ export enum TokenType {
 
 	// Keywords
 	Let = "Let",
+	Const = "Const",
 }
 
 const KEYWORDS: Record<string, TokenType> = {
 	let: TokenType.Let,
+	const: TokenType.Const,
 }
 
 export interface Token {
@@ -61,6 +64,11 @@ export function tokenize(sourceCode: string): Token[] {
 
 		if (char === "=") {
 			tokens.push({ type: TokenType.Equals, value: char })
+			continue
+		}
+
+		if (char === ";") {
+			tokens.push({ type: TokenType.Semicolon, value: char })
 			continue
 		}
 

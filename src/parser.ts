@@ -5,6 +5,7 @@ import type {
 	NumericLiteral,
 	Program,
 	Statement,
+	VariableDeclaration,
 } from "./ast"
 import { type Token, TokenType, tokenize } from "./lexer"
 
@@ -54,8 +55,52 @@ export default class Parser {
 		return program
 	}
 
+	// Handle complex statements
 	private parseStatement(): Statement {
-		return this.parseExpression()
+		const token = this.peek().type
+
+		switch (token) {
+			case TokenType.Let:
+			case TokenType.Const:
+				return this.parseVariableDeclaration()
+			default:
+				return this.parseExpression()
+		}
+	}
+
+	private parseVariableDeclaration(): Statement {
+		const token = this.consume()
+
+		const isConstant = token.type === TokenType.Const
+		const identifier = this.expect(TokenType.Identifier).value
+
+		// ! If we don't keep undefined, this should be a runtime error
+		if (this.peek().type === TokenType.Semicolon) {
+			this.consume()
+
+			if (isConstant) {
+				throw new Error("Constant must be initialized")
+			}
+
+			return {
+				kind: "VariableDeclaration",
+				constant: false,
+				identifier,
+			} as VariableDeclaration
+		}
+
+		this.expect(TokenType.Equals)
+
+		const declaration = {
+			kind: "VariableDeclaration",
+			constant: isConstant,
+			value: this.parseExpression(),
+			identifier,
+		} as VariableDeclaration
+
+		this.expect(TokenType.Semicolon)
+
+		return declaration
 	}
 
 	private parseExpression(): Expression {
