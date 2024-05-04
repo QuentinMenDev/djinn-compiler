@@ -20,9 +20,10 @@ export interface BinaryExpression extends Expression {
 	left: Expression
 	right: Expression
 }
+
 export interface Identifier extends Expression {
 	kind: "Identifier"
-	name: string
+	symbol: string
 }
 export interface NumericLiteral extends Expression {
 	kind: "NumericLiteral"

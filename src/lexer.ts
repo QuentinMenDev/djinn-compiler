@@ -63,7 +63,7 @@ export function tokenize(sourceCode: string): Token[] {
 			continue
 		}
 
-		if (char.match(/[\+\-\*\/]/)) {
+		if (char.match(/[\+\-\*\/\%]/)) {
 			tokens.push({ type: TokenType.BinaryOperator, value: char })
 			continue
 		}
