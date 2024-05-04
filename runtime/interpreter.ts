@@ -1,10 +1,17 @@
 import type {
 	BinaryExpression,
+	Identifier,
 	NumericLiteral,
 	Program,
 	Statement,
 } from "../src/ast"
-import type { NullValue, NumberValue, RuntimeValue } from "./values"
+import type Environment from "./environment"
+import {
+	type NumberValue,
+	type RuntimeValue,
+	makeNull,
+	makeNumber,
+} from "./values"
 
 function interpretNumericBinaryExpression(
 	left: NumberValue,
@@ -32,15 +39,15 @@ function interpretNumericBinaryExpression(
 			throw new Error(`Unknown operator ${operator}`)
 	}
 
-	return {
-		type: "number",
-		value: result,
-	}
+	return makeNumber(result)
 }
 
-function interpretBinaryExpression(node: BinaryExpression): RuntimeValue {
-	const left = interpret(node.left)
-	const right = interpret(node.right)
+function interpretBinaryExpression(
+	node: BinaryExpression,
+	env: Environment,
+): RuntimeValue {
+	const left = interpret(node.left, env)
+	const right = interpret(node.right, env)
 
 	if (left.type !== "number" || right.type !== "number") {
 		throw new Error("Operands must be numbers")
@@ -53,35 +60,30 @@ function interpretBinaryExpression(node: BinaryExpression): RuntimeValue {
 	)
 }
 
-function interpretProgram(program: Program): RuntimeValue {
-	let lastInterpretedValue: RuntimeValue = {
-		type: "null",
-		value: "null",
-	} as NullValue
+function interpretProgram(program: Program, env: Environment): RuntimeValue {
+	let lastInterpretedValue: RuntimeValue = makeNull()
 
 	for (const statement of program.body) {
-		lastInterpretedValue = interpret(statement)
+		lastInterpretedValue = interpret(statement, env)
 	}
 
 	return lastInterpretedValue
 }
 
-export function interpret(astNode: Statement): RuntimeValue {
+function interpretIdentifier(node: Identifier, env: Environment): RuntimeValue {
+	return env.lookup(node.symbol)
+}
+
+export function interpret(astNode: Statement, env: Environment): RuntimeValue {
 	switch (astNode.kind) {
 		case "NumericLiteral":
-			return {
-				type: "number",
-				value: (astNode as NumericLiteral).value,
-			} as NumberValue
-		case "NullLiteral":
-			return {
-				type: "null",
-				value: "null",
-			} as NullValue
+			return makeNumber((astNode as NumericLiteral).value)
+		case "Identifier":
+			return interpretIdentifier(astNode as Identifier, env)
 		case "BinaryExpression":
-			return interpretBinaryExpression(astNode as BinaryExpression)
+			return interpretBinaryExpression(astNode as BinaryExpression, env)
 		case "Program":
-			return interpretProgram(astNode as Program)
+			return interpretProgram(astNode as Program, env)
 		default:
 			throw new Error(`Unknown node type ${astNode.kind}`)
 	}

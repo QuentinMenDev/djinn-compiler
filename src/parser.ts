@@ -2,7 +2,6 @@ import type {
 	BinaryExpression,
 	Expression,
 	Identifier,
-	NullLiteral,
 	NumericLiteral,
 	Program,
 	Statement,
@@ -125,12 +124,6 @@ export default class Parser {
 					kind: "Identifier",
 					symbol: this.consume().value,
 				} as Identifier
-			case TokenType.Null:
-				this.consume()
-				return {
-					kind: "NullLiteral",
-					value: "null",
-				} as NullLiteral
 			case TokenType.Number:
 				return {
 					kind: "NumericLiteral",
