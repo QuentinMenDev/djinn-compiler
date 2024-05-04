@@ -3,10 +3,12 @@
  * - Use classes for tokens
  * - Have more token types
  * - Have better error handling
+ * - Change null and undefined into an Optional type. See if it makes sense and makes the code more readable.
  */
 
 export enum TokenType {
 	// Literal types
+	Null = "Null",
 	Number = "Number",
 	Identifier = "Identifier",
 
@@ -23,6 +25,7 @@ export enum TokenType {
 
 const KEYWORDS: Record<string, TokenType> = {
 	let: TokenType.Let,
+	null: TokenType.Null,
 }
 
 export interface Token {

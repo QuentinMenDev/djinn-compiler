@@ -1,3 +1,4 @@
+import { interpret } from "./runtime/interpreter"
 import Parser from "./src/parser"
 
 // REPL: Read, Evaluate, Print, Loop
@@ -19,7 +20,8 @@ async function repl() {
 
 		try {
 			const ast = parser.produceAST(input)
-			console.log(JSON.stringify(ast, null, 2))
+			const result = interpret(ast)
+			console.log(result)
 		} catch (error) {
 			console.error(error)
 		}
