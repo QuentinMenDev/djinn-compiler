@@ -1,15 +1,28 @@
-import Environment from "./runtime/environment"
+import Environment, { createGlobalEnv } from "./runtime/environment"
 import { interpret } from "./runtime/interpreter"
-import { makeBoolean, makeNull, makeNumber } from "./runtime/values"
 import Parser from "./src/parser"
 
-// REPL: Read, Evaluate, Print, Loop
-async function repl() {
+run("./test.dj")
+
+async function run(filename: string) {
 	const parser = new Parser()
-	const env = new Environment()
-	env.declareVariable("true", makeBoolean(), true)
-	env.declareVariable("false", makeBoolean(false), true)
-	env.declareVariable("null", makeNull(), true)
+	const env = createGlobalEnv()
+
+	try {
+		const input = await Bun.file(filename).text()
+		const ast = parser.produceAST(input)
+		const result = interpret(ast, env)
+		console.log(result)
+	} catch (error) {
+		console.error(error)
+	}
+}
+
+// REPL: Read, Evaluate, Print, Loop
+// repl()
+async function repl(filename: string) {
+	const parser = new Parser()
+	const env = createGlobalEnv()
 
 	console.log("\nRepl v0.1.0")
 
@@ -26,6 +39,7 @@ async function repl() {
 		}
 
 		try {
+			const input = await Bun.file(filename).text()
 			const ast = parser.produceAST(input)
 			const result = interpret(ast, env)
 			console.log(result)
@@ -34,5 +48,3 @@ async function repl() {
 		}
 	}
 }
-
-repl()

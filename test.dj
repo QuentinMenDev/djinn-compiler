@@ -1,0 +1,10 @@
+const foo = 50 / 5;
+
+const object = {
+    x: 100,
+    y: 42,
+    foo,
+    complex: {
+        bar: true,
+    },
+};

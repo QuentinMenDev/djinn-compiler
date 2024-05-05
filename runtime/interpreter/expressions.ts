@@ -2,10 +2,16 @@ import type {
 	AssignmentExpression,
 	BinaryExpression,
 	Identifier,
+	ObjectLiteral,
 } from "../../src/ast"
 import type Environment from "../environment"
 import { interpret } from "../interpreter"
-import { type NumberValue, type RuntimeValue, makeNumber } from "../values"
+import {
+	type NumberValue,
+	type ObjectValue,
+	type RuntimeValue,
+	makeNumber,
+} from "../values"
 
 export function interpretNumericBinaryExpression(
 	left: NumberValue,
@@ -72,4 +78,23 @@ export function interpretAssignmentExpression(
 	const name = (node.assignee as Identifier).symbol
 
 	return env.assignVariable(name, interpret(node.value, env))
+}
+
+export function interpretObjectExpression(
+	obj: ObjectLiteral,
+	env: Environment,
+): RuntimeValue {
+	const object = {
+		type: "object",
+		properties: new Map(),
+	} as ObjectValue
+
+	for (const { key, value } of obj.properties) {
+		const runtimeValue =
+			value === undefined ? env.lookup(key) : interpret(value, env)
+
+		object.properties.set(key, runtimeValue)
+	}
+
+	return object
 }

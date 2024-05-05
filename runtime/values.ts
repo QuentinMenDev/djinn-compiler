@@ -2,7 +2,7 @@
  * Define types for runtime values
  */
 
-export type ValueType = "null" | "number" | "string" | "boolean"
+export type ValueType = "null" | "number" | "string" | "boolean" | "object"
 
 export interface RuntimeValue {
 	type: ValueType
@@ -19,6 +19,10 @@ export interface NumberValue extends RuntimeValue {
 export interface BooleanValue extends RuntimeValue {
 	type: "boolean"
 	value: boolean
+}
+export interface ObjectValue extends RuntimeValue {
+	type: "object"
+	properties: Map<string, RuntimeValue>
 }
 
 // I don't like the naming of these functions

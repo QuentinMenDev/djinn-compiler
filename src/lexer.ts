@@ -12,11 +12,15 @@ export enum TokenType {
 	Identifier = "Identifier",
 
 	// Operators, Grouping
-	Equals = "Equals",
-	Semicolon = "Semicolon",
-	OpenParen = "OpenParen",
-	CloseParen = "CloseParen",
-	BinaryOperator = "BinaryOperator",
+	Equals = "Equals", // =
+	Coma = "Coma", // ,
+	Colon = "Colon", // :
+	Semicolon = "Semicolon", // ;
+	OpenParen = "OpenParen", // (
+	CloseParen = "CloseParen", // )
+	OpenBrace = "OpenBrace", // {
+	CloseBrace = "CloseBrace", // }
+	BinaryOperator = "BinaryOperator", // +, -, *, /, %
 	EOF = "EOF",
 
 	// Keywords
@@ -35,7 +39,7 @@ export interface Token {
 }
 
 function isSkipChar(char: string): boolean {
-	return char === " " || char === "\n" || char === "\t"
+	return char === " " || char === "\n" || char === "\t" || char === "\r"
 }
 
 export function tokenize(sourceCode: string): Token[] {
@@ -62,6 +66,16 @@ export function tokenize(sourceCode: string): Token[] {
 			continue
 		}
 
+		if (char === "{") {
+			tokens.push({ type: TokenType.OpenBrace, value: char })
+			continue
+		}
+
+		if (char === "}") {
+			tokens.push({ type: TokenType.CloseBrace, value: char })
+			continue
+		}
+
 		if (char === "=") {
 			tokens.push({ type: TokenType.Equals, value: char })
 			continue
@@ -69,6 +83,16 @@ export function tokenize(sourceCode: string): Token[] {
 
 		if (char === ";") {
 			tokens.push({ type: TokenType.Semicolon, value: char })
+			continue
+		}
+
+		if (char === ",") {
+			tokens.push({ type: TokenType.Coma, value: char })
+			continue
+		}
+
+		if (char === ":") {
+			tokens.push({ type: TokenType.Colon, value: char })
 			continue
 		}
 

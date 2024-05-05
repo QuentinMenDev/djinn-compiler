@@ -4,7 +4,9 @@ import type {
 	Expression,
 	Identifier,
 	NumericLiteral,
+	ObjectLiteral,
 	Program,
+	Property,
 	Statement,
 	VariableDeclaration,
 } from "./ast"
@@ -121,7 +123,7 @@ export default class Parser {
 	 */
 
 	private parseAssignmentExpression(): Expression {
-		const left = this.parseAdditiveExpression()
+		const left = this.parseObjectLiteral()
 
 		if (this.peek().type === TokenType.Equals) {
 			this.consume()
@@ -135,6 +137,56 @@ export default class Parser {
 		}
 
 		return left
+	}
+
+	private parseObjectLiteral(): Expression {
+		if (this.peek().type !== TokenType.OpenBrace) {
+			return this.parseAdditiveExpression()
+		}
+
+		this.consume()
+		const properties = new Array<Property>()
+
+		while (!this.isEof() && this.peek().type !== TokenType.CloseBrace) {
+			const key = this.expect(TokenType.Identifier).value
+
+			// * case: { x, }
+			if (this.peek().type === TokenType.Coma) {
+				this.consume()
+				properties.push({
+					kind: "Property",
+					key,
+				})
+				continue
+			}
+			// * case: { x }
+			if (this.peek().type === TokenType.CloseBrace) {
+				properties.push({
+					kind: "Property",
+					key,
+				})
+				continue
+			}
+
+			this.expect(TokenType.Colon)
+			const value = this.parseExpression()
+
+			properties.push({
+				kind: "Property",
+				key,
+				value,
+			})
+
+			if (this.peek().type !== TokenType.CloseBrace) {
+				this.expect(TokenType.Coma)
+			}
+		}
+
+		this.expect(TokenType.CloseBrace)
+		return {
+			kind: "ObjectLiteral",
+			properties,
+		} as ObjectLiteral
 	}
 
 	private parseAdditiveExpression(): Expression {

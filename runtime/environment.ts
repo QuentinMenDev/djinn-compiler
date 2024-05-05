@@ -1,4 +1,14 @@
-import type { RuntimeValue } from "./values"
+import { type RuntimeValue, makeBoolean, makeNull } from "./values"
+
+export function createGlobalEnv() {
+	const env = new Environment()
+	// Create default global environment
+	env.declareVariable("true", makeBoolean(true), true)
+	env.declareVariable("false", makeBoolean(false), true)
+	env.declareVariable("null", makeNull(), true)
+
+	return env
+}
 
 export default class Environment {
 	private parent?: Environment
@@ -6,6 +16,7 @@ export default class Environment {
 	private constants: Set<string>
 
 	constructor(parent?: Environment) {
+		const global = !!parent
 		this.parent = parent
 		this.variables = new Map()
 		this.constants = new Set()

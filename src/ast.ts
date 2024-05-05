@@ -2,8 +2,13 @@ export type NodeType =
 	// Statements
 	| "Program"
 	| "VariableDeclaration"
+
 	// Expressions
 	| "AssignmentExpression"
+
+	// Literals
+	| "Property"
+	| "ObjectLiteral"
 	| "NumericLiteral"
 	| "Identifier"
 	| "BinaryExpression"
@@ -35,14 +40,36 @@ export interface BinaryExpression extends Expression {
 	left: Expression
 	right: Expression
 }
+// Literals / Primary Expressions
 
+/**
+ * Represents a user defined variable or symbol
+ */
 export interface Identifier extends Expression {
 	kind: "Identifier"
 	symbol: string
 }
+/**
+ * Represents a numeric constant
+ */
 export interface NumericLiteral extends Expression {
 	kind: "NumericLiteral"
 	value: number
+}
+/**
+ * Represents a key-value pair
+ */
+export interface Property extends Expression {
+	kind: "Property"
+	key: string
+	value?: Expression // This means that a property can be declared without a value. Eg. { x, y: 2 }
+}
+/**
+ * Represents an array of key-value pairs
+ */
+export interface ObjectLiteral extends Expression {
+	kind: "ObjectLiteral"
+	properties: Property[]
 }
 export interface AssignmentExpression extends Expression {
 	kind: "AssignmentExpression"
