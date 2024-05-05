@@ -1,6 +1,7 @@
 import type {
 	AssignmentExpression,
 	BinaryExpression,
+	CallExpression,
 	Identifier,
 	NumericLiteral,
 	ObjectLiteral,
@@ -12,6 +13,7 @@ import type Environment from "./environment"
 import {
 	interpretAssignmentExpression,
 	interpretBinaryExpression,
+	interpretCallExpression,
 	interpretIdentifier,
 	interpretObjectExpression,
 } from "./interpreter/expressions"
@@ -29,6 +31,8 @@ export function interpret(astNode: Statement, env: Environment): RuntimeValue {
 			return interpretIdentifier(astNode as Identifier, env)
 		case "ObjectLiteral":
 			return interpretObjectExpression(astNode as ObjectLiteral, env)
+		case "CallExpression":
+			return interpretCallExpression(astNode as CallExpression, env)
 		case "AssignmentExpression":
 			return interpretAssignmentExpression(astNode as AssignmentExpression, env)
 		case "BinaryExpression":

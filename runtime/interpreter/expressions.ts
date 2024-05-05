@@ -1,15 +1,18 @@
 import type {
 	AssignmentExpression,
 	BinaryExpression,
+	CallExpression,
 	Identifier,
 	ObjectLiteral,
 } from "../../src/ast"
 import type Environment from "../environment"
 import { interpret } from "../interpreter"
 import {
+	type NativeFunctionValue,
 	type NumberValue,
 	type ObjectValue,
 	type RuntimeValue,
+	makeNull,
 	makeNumber,
 } from "../values"
 
@@ -97,4 +100,21 @@ export function interpretObjectExpression(
 	}
 
 	return object
+}
+
+export function interpretCallExpression(
+	expression: CallExpression,
+	env: Environment,
+): RuntimeValue {
+	const args = expression.args.map((arg) => interpret(arg, env))
+	const fn = interpret(expression.caller, env)
+
+	if (fn.type !== "native-function") {
+		throw new Error(
+			`Can only call values that are not functions: ${JSON.stringify(fn)}`,
+		)
+	}
+
+	const result = (fn as NativeFunctionValue).call(args, env)
+	return result
 }
