@@ -7,7 +7,6 @@ import Parser from "./src/parser"
 async function repl() {
 	const parser = new Parser()
 	const env = new Environment()
-	env.declareVariable("x", makeNumber(100), false)
 	env.declareVariable("true", makeBoolean(), true)
 	env.declareVariable("false", makeBoolean(false), true)
 	env.declareVariable("null", makeNull(), true)

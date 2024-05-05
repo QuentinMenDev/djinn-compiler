@@ -1,4 +1,8 @@
-import type { BinaryExpression, Identifier } from "../../src/ast"
+import type {
+	AssignmentExpression,
+	BinaryExpression,
+	Identifier,
+} from "../../src/ast"
 import type Environment from "../environment"
 import { interpret } from "../interpreter"
 import { type NumberValue, type RuntimeValue, makeNumber } from "../values"
@@ -55,4 +59,17 @@ export function interpretIdentifier(
 	env: Environment,
 ): RuntimeValue {
 	return env.lookup(node.symbol)
+}
+
+export function interpretAssignmentExpression(
+	node: AssignmentExpression,
+	env: Environment,
+): RuntimeValue {
+	if (node.assignee.kind !== "Identifier") {
+		throw new Error("Invalid assignment target")
+	}
+
+	const name = (node.assignee as Identifier).symbol
+
+	return env.assignVariable(name, interpret(node.value, env))
 }

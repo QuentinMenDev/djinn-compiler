@@ -1,4 +1,5 @@
 import type {
+	AssignmentExpression,
 	BinaryExpression,
 	Expression,
 	Identifier,
@@ -104,7 +105,7 @@ export default class Parser {
 	}
 
 	private parseExpression(): Expression {
-		return this.parseAdditiveExpression()
+		return this.parseAssignmentExpression()
 	}
 
 	/**
@@ -118,6 +119,24 @@ export default class Parser {
 	 * 7. Member expressions
 	 * 8. Assignment expressions
 	 */
+
+	private parseAssignmentExpression(): Expression {
+		const left = this.parseAdditiveExpression()
+
+		if (this.peek().type === TokenType.Equals) {
+			this.consume()
+			const right = this.parseAssignmentExpression() // this allows chaining of assignments
+
+			return {
+				kind: "AssignmentExpression",
+				assignee: left,
+				value: right,
+			} as AssignmentExpression
+		}
+
+		return left
+	}
+
 	private parseAdditiveExpression(): Expression {
 		let left = this.parseMultiplicativeExpression()
 

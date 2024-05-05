@@ -1,4 +1,5 @@
 import type {
+	AssignmentExpression,
 	BinaryExpression,
 	Identifier,
 	NumericLiteral,
@@ -8,6 +9,7 @@ import type {
 } from "../src/ast"
 import type Environment from "./environment"
 import {
+	interpretAssignmentExpression,
 	interpretBinaryExpression,
 	interpretIdentifier,
 } from "./interpreter/expressions"
@@ -23,6 +25,8 @@ export function interpret(astNode: Statement, env: Environment): RuntimeValue {
 			return makeNumber((astNode as NumericLiteral).value)
 		case "Identifier":
 			return interpretIdentifier(astNode as Identifier, env)
+		case "AssignmentExpression":
+			return interpretAssignmentExpression(astNode as AssignmentExpression, env)
 		case "BinaryExpression":
 			return interpretBinaryExpression(astNode as BinaryExpression, env)
 		case "Program":
