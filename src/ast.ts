@@ -2,6 +2,7 @@ export type NodeType =
 	// Statements
 	| "Program"
 	| "VariableDeclaration"
+	| "FunctionDeclaration"
 
 	// Expressions
 	| "AssignmentExpression"
@@ -32,6 +33,14 @@ export interface VariableDeclaration extends Statement {
 	constant: boolean
 	identifier: string
 	value?: Expression // This means that a variable can be declared without a value. Eg. let x;
+}
+export interface FunctionDeclaration extends Statement {
+	kind: "FunctionDeclaration"
+	parameters: string[]
+	name: string
+	body: Statement[]
+	// async: boolean
+	// arrow: boolean
 }
 // Expressions will result in a value at runtime (unlike statements)
 export interface Expression extends Statement {}

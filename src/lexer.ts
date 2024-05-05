@@ -29,11 +29,13 @@ export enum TokenType {
 	// Keywords
 	Let = "Let",
 	Const = "Const",
+	Fn = "Fn",
 }
 
 const KEYWORDS: Record<string, TokenType> = {
 	let: TokenType.Let,
 	const: TokenType.Const,
+	fn: TokenType.Fn,
 }
 
 export interface Token {

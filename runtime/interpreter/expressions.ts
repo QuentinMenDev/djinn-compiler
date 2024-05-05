@@ -5,9 +5,10 @@ import type {
 	Identifier,
 	ObjectLiteral,
 } from "../../src/ast"
-import type Environment from "../environment"
+import Environment from "../environment"
 import { interpret } from "../interpreter"
 import {
+	type FunctionValue,
 	type NativeFunctionValue,
 	type NumberValue,
 	type ObjectValue,
@@ -109,12 +110,32 @@ export function interpretCallExpression(
 	const args = expression.args.map((arg) => interpret(arg, env))
 	const fn = interpret(expression.caller, env)
 
-	if (fn.type !== "native-function") {
-		throw new Error(
-			`Can only call values that are not functions: ${JSON.stringify(fn)}`,
-		)
+	if (fn.type === "native-function") {
+		const result = (fn as NativeFunctionValue).call(args, env)
+		return result
+	}
+	if (fn.type === "function") {
+		const functionValue = fn as FunctionValue
+		const functionEnv = new Environment(functionValue.declarationEnv)
+
+		// Create variables for the parameters list
+		for (let i = 0; i < functionValue.parameters.length; i++) {
+			// TODO: Check if the number of arguments is correct (arity)
+			const parameter = functionValue.parameters[i]
+			const arg = args[i]
+
+			functionEnv.declareVariable(parameter, arg, false)
+		}
+
+		let result: RuntimeValue = makeNull()
+		for (const statement of functionValue.body) {
+			result = interpret(statement, functionEnv)
+		}
+
+		return result
 	}
 
-	const result = (fn as NativeFunctionValue).call(args, env)
-	return result
+	throw new Error(
+		`Can only call values that are not functions: ${JSON.stringify(fn)}`,
+	)
 }

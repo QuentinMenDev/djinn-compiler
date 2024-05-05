@@ -1,3 +1,10 @@
-const timeNow = time();
+fn add (x, y) {
+    let result = x + y;
+    print(result)
 
-print(timeNow)
+    result
+}
+
+const result = add(10, 4);
+
+print(result)

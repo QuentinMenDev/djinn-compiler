@@ -3,6 +3,7 @@ import type {
 	BinaryExpression,
 	CallExpression,
 	Expression,
+	FunctionDeclaration,
 	Identifier,
 	MemberExpression,
 	NumericLiteral,
@@ -68,9 +69,46 @@ export default class Parser {
 			case TokenType.Let:
 			case TokenType.Const:
 				return this.parseVariableDeclaration()
+			case TokenType.Fn:
+				return this.parseFunctionDeclaration()
 			default:
 				return this.parseExpression()
 		}
+	}
+
+	private parseFunctionDeclaration(): Statement {
+		this.consume() // consume the fn keyword
+		const name = this.expect(TokenType.Identifier).value
+
+		const args = this.parseArgs()
+		const params = args.map((arg) => {
+			if (arg.kind !== "Identifier") {
+				throw new Error("Invalid argument. String expected as parameter.")
+			}
+			return (arg as Identifier).symbol
+		})
+
+		// ? If we have an async function, we can add a flag here
+		// ...
+
+		this.expect(TokenType.OpenBrace)
+
+		const body: Statement[] = []
+
+		while (!this.isEof() && this.peek().type !== TokenType.CloseBrace) {
+			body.push(this.parseStatement())
+		}
+
+		this.expect(TokenType.CloseBrace)
+
+		const fn = {
+			kind: "FunctionDeclaration",
+			name,
+			parameters: params,
+			body,
+		} as FunctionDeclaration
+
+		return fn
 	}
 
 	private parseVariableDeclaration(): Statement {

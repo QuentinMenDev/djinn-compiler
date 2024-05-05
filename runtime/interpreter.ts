@@ -2,6 +2,7 @@ import type {
 	AssignmentExpression,
 	BinaryExpression,
 	CallExpression,
+	FunctionDeclaration,
 	Identifier,
 	NumericLiteral,
 	ObjectLiteral,
@@ -18,6 +19,7 @@ import {
 	interpretObjectExpression,
 } from "./interpreter/expressions"
 import {
+	interpretFunctionDeclaration,
 	interpretProgram,
 	interpretVariableDeclaration,
 } from "./interpreter/statements"
@@ -42,6 +44,8 @@ export function interpret(astNode: Statement, env: Environment): RuntimeValue {
 		// Handle statements
 		case "VariableDeclaration":
 			return interpretVariableDeclaration(astNode as VariableDeclaration, env)
+		case "FunctionDeclaration":
+			return interpretFunctionDeclaration(astNode as FunctionDeclaration, env)
 		default:
 			throw new Error(`Unknown node type ${astNode.kind}`)
 	}

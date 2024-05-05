@@ -1,7 +1,11 @@
-import type { Program, VariableDeclaration } from "../../src/ast"
+import type {
+	FunctionDeclaration,
+	Program,
+	VariableDeclaration,
+} from "../../src/ast"
 import type Environment from "../environment"
 import { interpret } from "../interpreter"
-import { type RuntimeValue, makeNull } from "../values"
+import { type FunctionValue, type RuntimeValue, makeNull } from "../values"
 
 export function interpretProgram(
 	program: Program,
@@ -29,4 +33,19 @@ export function interpretVariableDeclaration(
 		value,
 		declaration.constant,
 	)
+}
+
+export function interpretFunctionDeclaration(
+	declaration: FunctionDeclaration,
+	env: Environment,
+): RuntimeValue {
+	const fn = {
+		type: "function",
+		name: declaration.name,
+		parameters: declaration.parameters,
+		declarationEnv: env,
+		body: declaration.body,
+	} as FunctionValue
+
+	return env.declareVariable(declaration.name, fn, true)
 }
