@@ -1,8 +1,10 @@
 import type {
 	AssignmentExpression,
 	BinaryExpression,
+	CallExpression,
 	Expression,
 	Identifier,
+	MemberExpression,
 	NumericLiteral,
 	ObjectLiteral,
 	Program,
@@ -110,16 +112,53 @@ export default class Parser {
 		return this.parseAssignmentExpression()
 	}
 
+	private parseMemberExpression(): Expression {
+		let object = this.parsePrimaryExpression()
+
+		while (
+			this.peek().type === TokenType.Dot ||
+			this.peek().type === TokenType.OpenBracket
+		) {
+			const operator = this.consume()
+			let property: Expression
+			let computed: boolean
+
+			if (operator.type === TokenType.Dot) {
+				computed = false
+				property = this.parsePrimaryExpression()
+
+				if (property.kind !== "Identifier") {
+					throw new Error(
+						"Cannot access property of non-identifier. Right hand side must be an identifier.",
+					)
+				}
+			} else {
+				// this allows chaining like obj[computedValue]
+				computed = true
+				property = this.parseExpression()
+				this.expect(TokenType.CloseBracket)
+			}
+
+			object = {
+				kind: "MemberExpression",
+				object,
+				property,
+				computed,
+			} as MemberExpression
+		}
+
+		return object
+	}
+
 	/**
 	 * Order of operations
-	 * 1. Primary expressions
-	 * 2. Multiplication and division
-	 * 3. Addition and subtraction
-	 * 4. Comparison
-	 * 5. Logical expressions
-	 * 6. Function calls
-	 * 7. Member expressions
-	 * 8. Assignment expressions
+	 * Primary expressions
+	 * Member expressions
+	 * Function calls
+	 * Multiplication and division
+	 * Addition and subtraction
+	 * Object literals
+	 * Assignment expressions
 	 */
 
 	private parseAssignmentExpression(): Expression {
@@ -151,7 +190,7 @@ export default class Parser {
 			const key = this.expect(TokenType.Identifier).value
 
 			// * case: { x, }
-			if (this.peek().type === TokenType.Coma) {
+			if (this.peek().type === TokenType.Comma) {
 				this.consume()
 				properties.push({
 					kind: "Property",
@@ -178,7 +217,7 @@ export default class Parser {
 			})
 
 			if (this.peek().type !== TokenType.CloseBrace) {
-				this.expect(TokenType.Coma)
+				this.expect(TokenType.Comma)
 			}
 		}
 
@@ -211,14 +250,14 @@ export default class Parser {
 	}
 
 	private parseMultiplicativeExpression(): Expression {
-		let left = this.parsePrimaryExpression()
+		let left = this.parseCallMemberExpression()
 
 		while (
 			this.peek().type === TokenType.BinaryOperator &&
 			this.peek().value.match(/[\*\/\%]/)
 		) {
 			const operator = this.consume().value
-			const right = this.parsePrimaryExpression()
+			const right = this.parseCallMemberExpression()
 
 			left = {
 				kind: "BinaryExpression",
@@ -229,6 +268,48 @@ export default class Parser {
 		}
 
 		return left
+	}
+
+	private parseCallMemberExpression(): Expression {
+		const member = this.parseMemberExpression()
+
+		if (this.peek().type === TokenType.OpenParen) {
+			return this.parseCallExpression(member)
+		}
+
+		return member
+	}
+	private parseCallExpression(caller: Expression): Expression {
+		let callExpression: Expression = {
+			kind: "CallExpression",
+			caller,
+			args: this.parseArgs(),
+		} as CallExpression
+
+		// * Handle nested calls
+		if (this.peek().type === TokenType.OpenParen) {
+			callExpression = this.parseCallExpression(callExpression)
+		}
+
+		return callExpression
+	}
+	private parseArgs(): Expression[] {
+		this.expect(TokenType.OpenParen)
+		const args =
+			this.peek().type === TokenType.CloseParen ? [] : this.parseArgumentsList()
+
+		this.expect(TokenType.CloseParen)
+		return args
+	}
+	private parseArgumentsList(): Expression[] {
+		const args = [this.parseExpression()]
+
+		while (!this.isEof() && this.peek().type === TokenType.Comma) {
+			this.consume()
+			args.push(this.parseExpression())
+		}
+
+		return args
 	}
 
 	private parsePrimaryExpression(): Expression {

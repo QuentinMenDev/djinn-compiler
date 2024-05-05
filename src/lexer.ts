@@ -13,13 +13,16 @@ export enum TokenType {
 
 	// Operators, Grouping
 	Equals = "Equals", // =
-	Coma = "Coma", // ,
+	Comma = "Comma", // ,
 	Colon = "Colon", // :
 	Semicolon = "Semicolon", // ;
+	Dot = "Dot", // .
 	OpenParen = "OpenParen", // (
 	CloseParen = "CloseParen", // )
 	OpenBrace = "OpenBrace", // {
 	CloseBrace = "CloseBrace", // }
+	OpenBracket = "OpenBracket", // [
+	CloseBracket = "CloseBracket", // ]
 	BinaryOperator = "BinaryOperator", // +, -, *, /, %
 	EOF = "EOF",
 
@@ -76,6 +79,16 @@ export function tokenize(sourceCode: string): Token[] {
 			continue
 		}
 
+		if (char === "[") {
+			tokens.push({ type: TokenType.OpenBracket, value: char })
+			continue
+		}
+
+		if (char === "]") {
+			tokens.push({ type: TokenType.CloseBracket, value: char })
+			continue
+		}
+
 		if (char === "=") {
 			tokens.push({ type: TokenType.Equals, value: char })
 			continue
@@ -87,12 +100,17 @@ export function tokenize(sourceCode: string): Token[] {
 		}
 
 		if (char === ",") {
-			tokens.push({ type: TokenType.Coma, value: char })
+			tokens.push({ type: TokenType.Comma, value: char })
 			continue
 		}
 
 		if (char === ":") {
 			tokens.push({ type: TokenType.Colon, value: char })
+			continue
+		}
+
+		if (char === ".") {
+			tokens.push({ type: TokenType.Dot, value: char })
 			continue
 		}
 

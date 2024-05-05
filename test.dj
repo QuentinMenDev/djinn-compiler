@@ -8,3 +8,6 @@ const object = {
         bar: true,
     },
 };
+
+let f = object.complex.bar;
+foo = object.foo() +5

@@ -1,3 +1,4 @@
+import { inspect } from "bun"
 import Environment, { createGlobalEnv } from "./runtime/environment"
 import { interpret } from "./runtime/interpreter"
 import Parser from "./src/parser"
@@ -11,6 +12,7 @@ async function run(filename: string) {
 	try {
 		const input = await Bun.file(filename).text()
 		const ast = parser.produceAST(input)
+		// console.log(JSON.stringify(ast, null, 4))
 		const result = interpret(ast, env)
 		console.log(result)
 	} catch (error) {
