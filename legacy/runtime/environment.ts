@@ -1,4 +1,5 @@
 import {
+	type NumberValue,
 	type RuntimeValue,
 	makeBoolean,
 	makeNativeFunction,
@@ -17,7 +18,7 @@ export function createGlobalEnv() {
 	env.declareVariable(
 		"print",
 		makeNativeFunction((args, scope) => {
-			console.log(...args)
+			console.log(args.map((arg) => (arg as NumberValue).value).join(" "))
 			return makeNull()
 		}),
 		true,
