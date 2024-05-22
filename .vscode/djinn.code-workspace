@@ -1,0 +1,20 @@
+{
+  "folders": [
+	{
+		"path": ".."
+	},
+	{
+		"path": "../compiler"
+	},
+	{
+		"path": "../documentation"
+	}
+],
+  "settings": {
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "files.associations": {
+      "*.xml": "html",
+      "*.svg": "html"
+    }
+  }
+}

@@ -29,6 +29,8 @@ A variable is set a value using an equal followed by the value to be saved.
 
 As a writing standards, variables are written in **camelCase** pattern.
 
+**[immutability documentation](variable-immutability.md)**
+
 ```c#
 type_declarator name = value
 ```
@@ -37,6 +39,16 @@ If we want to make the variable non mutable, we need to add a const declarator b
 
 As a writing standards, constant are written in **CAPITAL** letters.
 
+> **Discussion:**
+> Should it be needed to declare constants? It seems a bit over the top as we are transpiling into
+> JavaScript which doesn't possess immutability. Also, C# doesn't have constants as it doesn't really
+> make sense.
+> **Except**, of course, if **mutability** is **allowed** in functions.
+> I would rather go for immutability of a value in a function, which means that whatever is passed in a
+> function, would be duplicated and the original value would never be changed. A **indicator** could
+> be used if the user really wants to mutate the valeu (liek in Rust)
+
+<i>**In discussion, not to implement yet**</i>
 ```c#
 const type_declarator NAME = value
 ```
@@ -129,7 +141,13 @@ comment
 ///
 This is a documentation comment.
 It follows markdown and is understood by intellisense
-/// 
+///
+
+///
+/// It can also be written
+/// that way to satisfy
+/// a different layout
+///
 ```
 
 #### Functions
