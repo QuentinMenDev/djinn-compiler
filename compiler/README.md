@@ -1,4 +1,4 @@
-# Djinn (*.dj)
+# Djinn (\*.dj)
 
 Welcome to Djinn, a superset of TypeScript that allows an easier formatting, stronger types, and no null values!
 
@@ -11,13 +11,14 @@ This is a hobby project (as for now) and should in no point be used in a real pr
 Work In Progress
 
 ##### ! Try to use bit operation i nthe compiler part.
+
 truncate: `a>>0`
 
 ##### ! (difficult) Have a force garbage collection.
+
 Even thoug hit is not possible to force a variable to be garbage collected, it is possible to set it so it has a higher priority in the garbage collection process.
 The way of doing it is to set the value of the variable as `null`, and al lthe references to the said variable also need to be set to null.
-For development purpsoes: cf `FinalizationRegistry` to be notified when a variable is garbage collected 
-
+For development purpsoes: cf `FinalizationRegistry` to be notified when a variable is garbage collected
 
 ### Variables declaration
 
@@ -31,7 +32,7 @@ As a writing standards, variables are written in **camelCase** pattern.
 
 **[immutability documentation](variable-immutability.md)**
 
-```c#
+```cs
 type_declarator name = value
 ```
 
@@ -49,7 +50,8 @@ As a writing standards, constant are written in **CAPITAL** letters.
 > be used if the user really wants to mutate the valeu (liek in Rust)
 
 <i>**In discussion, not to implement yet**</i>
-```c#
+
+```cs
 const type_declarator NAME = value
 ```
 
@@ -62,18 +64,20 @@ Each variable has a type that correspond to the kind of data it stores. A variab
 This type is used if the type of the varibale is unknown and can be a mix of multiple other types. Once the value is set at runtime, its type can't be changed.
 (Is this really needed? Maybe a it can be possible to have a cutom type declaration)
 
-```c#
+```cs
 let variable
 const let CONSTANT
 ```
 
 ##### Number
 
-```c#
+```cs
 int integerVar // -1, 1, -2, 2, -3, 3, ...
 const int INTEGER_VAR
 float floatVar // 1.5, 14.42, -42.1, ...
 const float FLOAT_VAR
+frac fracVar // 1/2, 6/5, 419/789
+const frac FRAC_VAR 
 comp imaginaryVar // i, 10i, 15i+5, ... (is this possible?)
 const comp IMAGINARY_VAR
 ```
@@ -82,7 +86,7 @@ const comp IMAGINARY_VAR
 
 ##### Character
 
-```c#
+```cs
 char charaterVar // "a", 1 character --> is this usefull?
 const char CHARACTER_VAR
 str stringVar // "list of characters" (str or string?)
@@ -91,17 +95,18 @@ const str STRING_VAR
 
 ##### Boolean
 
-```c#
+```cs
 bool booleanVar // true/false
 const bool VOOELAN_VAR
 ```
 
 #### Complex types
+
 ##### Enumerator
 
 Enumerators are constant and can never be changed.
 
-```c#
+```cs
 enum enumVariable // exactly like what TypeScript do
 ```
 
@@ -112,7 +117,7 @@ Allows to change a type into another type when possible
 (f) --> type cast from int to float
 (c) --> type cast from int or float to comp
 
-```c#
+```cs
 float myFloat = 1.0 + (f)2 // 3.0
 comp myComplex = 2i + (c)3 // 2i +3
 ```
@@ -121,13 +126,13 @@ comp myComplex = 2i + (c)3 // 2i +3
 
 ##### Single line comment
 
-```c#
+```cs
 // This is a single line comment
 ```
 
 ##### Multi line comment
 
-```c#
+```cs
 /*
 This is a
 multiline
@@ -137,7 +142,7 @@ comment
 
 ##### Documentation comment
 
-```c#
+```cs
 ///
 This is a documentation comment.
 It follows markdown and is understood by intellisense
@@ -154,15 +159,15 @@ It follows markdown and is understood by intellisense
 
 ##### Declaration
 
-```c#
+```cs
 type_declarator functionName() {
   // code here
 }
 ```
 
-
 # testing area
-```c#
+
+```cs
 int integer = 0
 str myString = "hello world"
 float myFloat = 1.2
