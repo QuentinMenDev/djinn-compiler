@@ -1,15 +1,16 @@
 {
   "folders": [
-	{
-		"path": ".."
-	},
-	{
-		"path": "../compiler"
-	},
-	{
-		"path": "../documentation"
-	}
-],
+    {
+      "path": "..",
+      "name": "<root>"
+    },
+    {
+      "path": "../compiler"
+    },
+    {
+      "path": "../documentation"
+    }
+  ],
   "settings": {
     "typescript.tsdk": "node_modules/typescript/lib",
     "files.associations": {
