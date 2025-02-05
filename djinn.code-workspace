@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "root"
+		},
+		{
+			"path": "compiler",
+			"name": "compiler"
+		},
+		{
+			"path": "legacy",
+			"name": "legacy"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"files.associations": {
+			"*.xml": "html",
+			"*.svg": "html"
+		}
+	}
+}

@@ -16,7 +16,6 @@
 	},
 	"javascript.format.semicolons": "remove",
 	"typescript.format.semicolons": "remove",
-	"autoimport.useSemiColon": false,
 	"typescript.format.insertSpaceAfterSemicolonInForStatements": false,
 	"javascript.format.insertSpaceAfterSemicolonInForStatements": false,
 	"typescript.tsdk": "node_modules/typescript/lib",
