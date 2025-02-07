@@ -5,8 +5,20 @@
 			"name": "root"
 		},
 		{
-			"path": "compiler",
-			"name": "compiler"
+			"path": "src/frontend",
+			"name": "frontend"
+		},
+		{
+			"path": "src/llvm-backend",
+			"name": "llvm"
+		},
+		{
+			"path": "benchmarks",
+			"name": "benchmarks"
+		},
+		{
+			"path": "tests",
+			"name": "tests"
 		},
 		{
 			"path": "legacy",
