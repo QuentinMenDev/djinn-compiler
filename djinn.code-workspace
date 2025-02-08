@@ -5,12 +5,8 @@
 			"name": "root"
 		},
 		{
-			"path": "src/frontend",
-			"name": "frontend"
-		},
-		{
-			"path": "src/llvm-backend",
-			"name": "llvm"
+			"path": "src",
+			"name": "compiler"
 		},
 		{
 			"path": "benchmarks",

@@ -1,0 +1,11 @@
+(library
+  (name parsing)
+  (libraries))
+  
+(menhir
+  (modules parser))
+
+(rule
+  (targets lexer.ml)
+  (deps lexer.mll)
+  (action (run ocamllex -o lexer.ml lexer.mll)))

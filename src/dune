@@ -1,4 +1,3 @@
 (executable
- (public_name djinn)
  (name main)
- (libraries djinn))
+ (libraries parsing))

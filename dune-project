@@ -2,6 +2,8 @@
 
 (name djinn)
 
+(using menhir 2.0)
+
 (generate_opam_files true)
 
 (source
@@ -17,8 +19,9 @@
 
 (package
  (name djinn)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (allow_empty)
+ (synopsis "A scientific coding language for the world")
+ (description "Djinn is aiming to becoming the reference in the world of science for coding. It is a language that is easy to learn and to use, and that is powerful enough to be used in the most demanding scientific applications.")
  (depends ocaml dune)
  (tags
   (topics "to describe" your project)))
