@@ -1,7 +1,5 @@
 (lang dune 3.15)
-
 (name djinn)
-
 (using menhir 2.0)
 
 (generate_opam_files true)

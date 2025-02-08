@@ -1,11 +1,12 @@
 (library
-  (name parsing)
-  (libraries))
-  
-(menhir
-  (modules parser))
+ (name parsing)
+ (libraries core fmt menhirLib ast)
+ (preprocess
+  (pps bisect_ppx --conditional))
+ (lint
+  (pps ppx_js_style -annotated-ignores -styler -pretty -dated-deprecation)))
 
-(rule
-  (targets lexer.ml)
-  (deps lexer.mll)
-  (action (run ocamllex -o lexer.ml lexer.mll)))
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
