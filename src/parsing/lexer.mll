@@ -29,6 +29,8 @@ rule read =
   parse
   | '+'           { PLUS }
   | '-'           { MINUS }
+  | '*'           { MULT }
+  | '/'           { DIV }
   | '='           { EQUAL }
   | whitespace    { read lexbuf }
   | unsigned_int  { INT (int_of_string (Lexing.lexeme lexbuf)) }

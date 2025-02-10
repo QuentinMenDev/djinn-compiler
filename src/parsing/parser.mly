@@ -8,12 +8,15 @@
 // Mathematical operators
 %token PLUS
 %token MINUS
+%token MULT
+%token DIV
 %token EQUAL
 // Misc
 %token EOF
 
 %right EQUAL
 %left PLUS MINUS
+%left MULT DIV
 
 %start program
 %type <Parsed_ast.program> program
@@ -35,5 +38,7 @@ expr:
 %inline bin_op:
   | PLUS {BinOpAdd}
   | MINUS {BinOpSub}
+  | MULT {BinOpMult}
+  | DIV {BinOpDiv}
   | EQUAL {BinOpEq}
   ;

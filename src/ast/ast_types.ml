@@ -7,6 +7,8 @@ let string_of_tok_pos tok_pos =
 type bin_op =
   | BinOpAdd
   | BinOpSub
+  | BinOpMult
+  | BinOpDiv
   | BinOpEq
 
 exception NotDesugaredGenericType of string

@@ -14,6 +14,8 @@ let rec show_expr = function
 and show_binop = function
   | BinOpAdd -> "+"
   | BinOpSub -> "-"
+  | BinOpMult -> "*"
+  | BinOpDiv -> "/"
   | BinOpEq -> "="
 
 let show_program (Prog (_, expr)) = Printf.sprintf "Program(%s)" (show_expr expr)
