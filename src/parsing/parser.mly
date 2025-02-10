@@ -1,5 +1,7 @@
 %{
-  open Ast
+  [@@@coverage exclude_file]
+  open Ast.Ast_types
+  open Parsed_ast
 %}
 
 %token <int> INT
@@ -14,16 +16,19 @@
 %left PLUS MINUS
 
 %start program
-%type <bool> program
+%type <Parsed_ast.program> program
 %type <expr> expr
+%type <bin_op> bin_op
 %%
 
 program:
-  | expr EOF { true }
+  | main=expr EOF { Prog($startpos, main) }
   ;
 
 expr:
   | i=INT {Integer($startpos, i)}
+  // Unary minus used for negative numbers
+  | MINUS e=expr { UnaryMinus($startpos, e) }
   | e1=expr op=bin_op e2=expr {BinaryOp($startpos, op, e1, e2)}
   ;
 

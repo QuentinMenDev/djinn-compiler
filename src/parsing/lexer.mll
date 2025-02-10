@@ -16,7 +16,8 @@
 let digit = ['0'-'9']
 let letter = ['a'-'z' 'A'-'Z']
 (* Types *)
-let int = '-'? digit+
+let unsigned_int = digit+
+let int = unsigned_int (* No leading "-" to avoid conflicts with subtraction *)
 let float = int '.' digit+
 (* space *)
 let whitespace = [' ' '\t']
@@ -26,11 +27,11 @@ let newline = '\n' | '\r' | "\r\n"
 
 rule read =
   parse
-  | whitespace  { read lexbuf }
-  | newline     { next_line lexbuf; read lexbuf }
-  | int         { INT (int_of_string (Lexing.lexeme lexbuf)) }
-  | '+'         { PLUS }
-  | '-'         { MINUS }
-  | '='         { EQUAL }
-  | _           { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
-  | eof         { EOF }
+  | '+'           { PLUS }
+  | '-'           { MINUS }
+  | '='           { EQUAL }
+  | whitespace    { read lexbuf }
+  | unsigned_int  { INT (int_of_string (Lexing.lexeme lexbuf)) }
+  | newline       { next_line lexbuf; read lexbuf }
+  | _             { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
+  | eof           { EOF }
