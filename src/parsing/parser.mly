@@ -7,6 +7,8 @@
 
 /* Tokens declaration */
 %token <int> INT
+%token <float> FLOAT
+%token <float> IMAGINARY
 %token SEMICOLON
 // Mathematical operators
 %token PLUS
@@ -40,6 +42,8 @@ statement:
 
 expr:
   | i=INT                     { Integer($startpos, i) }
+  | f=FLOAT                   { Float($startpos, f) }
+  | i=IMAGINARY               { Imaginary($startpos, i) }
   | e1=expr op=bin_op e2=expr { BinaryOp($startpos, op, e1, e2) }
   ;
 

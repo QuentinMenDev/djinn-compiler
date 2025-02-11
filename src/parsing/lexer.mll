@@ -19,6 +19,8 @@ let letter = ['a'-'z' 'A'-'Z']
 let unsigned_int = digit+
 let int = unsigned_int
 let float = int '.' digit+
+let number = int | float
+let imaginary = number 'i'
 (* space *)
 let whitespace = [' ' '\t']
 let newline = '\n' | '\r' | "\r\n"
@@ -27,14 +29,16 @@ let newline = '\n' | '\r' | "\r\n"
 
 rule read =
   parse
-  | ';'           { SEMICOLON }
-  | '+'           { PLUS }
-  | '-'           { MINUS }
-  | '*'           { MULT }
-  | '/'           { DIV }
-  | '='           { EQUAL }
-  | whitespace    { read lexbuf }
-  | unsigned_int  { INT (int_of_string (Lexing.lexeme lexbuf)) }
-  | newline       { next_line lexbuf; read lexbuf }
-  | _             { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
-  | eof           { EOF }
+  | ';'             { SEMICOLON }
+  | '+'             { PLUS }
+  | '-'             { MINUS }
+  | '*'             { MULT }
+  | '/'             { DIV }
+  | '='             { EQUAL }
+  | whitespace      { read lexbuf }
+  | unsigned_int    { INT (int_of_string (Lexing.lexeme lexbuf)) }
+  | float           { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
+  | imaginary       { IMAGINARY (float_of_string (String.sub (Lexing.lexeme lexbuf) 0 ((String.length (Lexing.lexeme lexbuf)) - 1))) }
+  | newline         { next_line lexbuf; read lexbuf }
+  | _               { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
+  | eof             { EOF }
