@@ -13,5 +13,4 @@
 #  ; build_dir = In_build_dir "default"
 #  ; instrument_with = []
 #  }
-$ /Users/quentinmennecart/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/h5/nhhqd4wd5fjgfkyvvzqcdhf40000gn/T/dune_28ec7f_output
-$ (cd _build/.sandbox/09fb9149871f1f55f42e174d492f2eae/default && .ppx/47e007fefa63695257b4d9874e3138b7/ppx.exe --conditional --cookie 'library-name="parsing"' -o src/parsing/parsed_ast.pp.ml --impl src/parsing/parsed_ast.ml -corrected-suffix .ppx-corrected -diff-cmd - -dump-ast)
+$ /Users/quentinmennecart/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/h5/nhhqd4wd5fjgfkyvvzqcdhf40000gn/T/dune_5c15c3_output

@@ -1,10 +1,13 @@
+/* Header: OCaml code runned before parsing */
 %{
   [@@@coverage exclude_file]
   open Ast.Ast_types
   open Parsed_ast
 %}
 
+/* Tokens declaration */
 %token <int> INT
+%token SEMICOLON
 // Mathematical operators
 %token PLUS
 %token MINUS
@@ -20,25 +23,32 @@
 
 %start program
 %type <Parsed_ast.program> program
+%type <statement> statement
 %type <expr> expr
 %type <bin_op> bin_op
 %%
 
+/* Grammar rules */
 program:
-  | main=expr EOF { Prog($startpos, main) }
+  | main=list(statement) EOF { Prog($startpos, main) }
+  ;
+
+statement:
+  | e=expr SEMICOLON { Block($startpos, e) }
+  | e=expr EOF { Block($startpos, e) }
   ;
 
 expr:
-  | i=INT {Integer($startpos, i)}
-  // Unary minus used for negative numbers
-  | MINUS e=expr { UnaryMinus($startpos, e) }
-  | e1=expr op=bin_op e2=expr {BinaryOp($startpos, op, e1, e2)}
+  | i=INT                     { Integer($startpos, i) }
+  | e1=expr op=bin_op e2=expr { BinaryOp($startpos, op, e1, e2) }
   ;
 
 %inline bin_op:
-  | PLUS {BinOpAdd}
+  | PLUS  {BinOpAdd}
   | MINUS {BinOpSub}
-  | MULT {BinOpMult}
-  | DIV {BinOpDiv}
+  | MULT  {BinOpMult}
+  | DIV   {BinOpDiv}
   | EQUAL {BinOpEq}
   ;
+
+/* Trailers: OCaml code runned after parsing */

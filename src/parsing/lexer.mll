@@ -17,7 +17,7 @@ let digit = ['0'-'9']
 let letter = ['a'-'z' 'A'-'Z']
 (* Types *)
 let unsigned_int = digit+
-let int = unsigned_int (* No leading "-" to avoid conflicts with subtraction *)
+let int = unsigned_int
 let float = int '.' digit+
 (* space *)
 let whitespace = [' ' '\t']
@@ -27,6 +27,7 @@ let newline = '\n' | '\r' | "\r\n"
 
 rule read =
   parse
+  | ';'           { SEMICOLON }
   | '+'           { PLUS }
   | '-'           { MINUS }
   | '*'           { MULT }

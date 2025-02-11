@@ -6,7 +6,7 @@ let () =
   try
     let ast = Parsing.Parser.program Parsing.Lexer.read lineBuffer in
     match ast with
-      | Parsing.Parsed_ast.Prog (_, _) ->
+      | Parsing.Parsed_ast.Prog (_, _) -> (* pos, value *)
           Printf.printf "Parsed AST: \n%s\n" (Parsing.Parsed_ast.show_program ast)
   with
     | Parsing.Lexer.SyntaxError msg ->
