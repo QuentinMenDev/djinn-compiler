@@ -22,6 +22,10 @@
     "files.associations": {
       "*.xml": "html",
       "*.svg": "html"
+    },
+    "ocaml.sandbox": {
+      "kind": "opam",
+      "switch": "4.13.1"
     }
   }
 }

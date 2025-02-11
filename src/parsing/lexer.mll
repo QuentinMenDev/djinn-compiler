@@ -21,6 +21,7 @@ let int = unsigned_int
 let float = int '.' digit+
 let number = int | float
 let imaginary = number 'i'
+let id = letter (letter | digit | '_')*
 (* space *)
 let whitespace = [' ' '\t']
 let newline = '\n' | '\r' | "\r\n"
@@ -35,10 +36,14 @@ rule read =
   | '*'             { MULT }
   | '/'             { DIV }
   | '='             { EQUAL }
+  | "const"         { CONST }
+  | "int"           { INT_TYPE }
+  | "float"         { FLOAT_TYPE }
   | whitespace      { read lexbuf }
   | unsigned_int    { INT (int_of_string (Lexing.lexeme lexbuf)) }
   | float           { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
   | imaginary       { IMAGINARY (float_of_string (String.sub (Lexing.lexeme lexbuf) 0 ((String.length (Lexing.lexeme lexbuf)) - 1))) }
-  | newline         { next_line lexbuf; read lexbuf }
+  | id              { ID (Lexing.lexeme lexbuf) }
+  | newline         { NEWLINE }
   | _               { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
   | eof             { EOF }

@@ -9,7 +9,12 @@
 %token <int> INT
 %token <float> FLOAT
 %token <float> IMAGINARY
-%token SEMICOLON
+%token <string> ID
+// Modifiers
+%token CONST
+// Types
+%token INT_TYPE
+%token FLOAT_TYPE
 // Mathematical operators
 %token PLUS
 %token MINUS
@@ -17,6 +22,8 @@
 %token DIV
 %token EQUAL
 // Misc
+%token SEMICOLON
+%token NEWLINE
 %token EOF
 
 %right EQUAL
@@ -28,6 +35,7 @@
 %type <statement> statement
 %type <expr> expr
 %type <bin_op> bin_op
+%type <type_expr> type_expr
 %%
 
 /* Grammar rules */
@@ -37,13 +45,20 @@ program:
 
 statement:
   | e=expr SEMICOLON { Block($startpos, e) }
+  | e=expr NEWLINE+ { Block($startpos, e) }
   | e=expr EOF { Block($startpos, e) }
   ;
+
+type_expr:
+  | INT_TYPE { TEInt }
+  | FLOAT_TYPE {TEFloat}
 
 expr:
   | i=INT                     { Integer($startpos, i) }
   | f=FLOAT                   { Float($startpos, f) }
   | i=IMAGINARY               { Imaginary($startpos, i) }
+  | var_type=type_expr; var_name=ID; EQUAL; e=expr { Let($startpos, var_type, var_name, e)}
+  | CONST; var_type=type_expr; var_name=ID; EQUAL; e=expr { Const($startpos, var_type, var_name, e)}
   | e1=expr op=bin_op e2=expr { BinaryOp($startpos, op, e1, e2) }
   ;
 

@@ -1,1 +1,2 @@
-3i + 20
+int a = 10
+const float b = 5

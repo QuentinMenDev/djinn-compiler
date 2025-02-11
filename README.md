@@ -181,3 +181,8 @@ str complexFunction(int x, str data) {
 }
 
 ```
+
+## Dev commands
+
+To run the exec and see if it parses/transpile/compile the `.dj` file
+`dune exec djinn_exec test1.dj`
