@@ -10,11 +10,14 @@
 %token <float> FLOAT
 %token <float> IMAGINARY
 %token <string> ID
+%token <string> STRING
 // Modifiers
 %token CONST
 // Types
 %token INT_TYPE
 %token FLOAT_TYPE
+%token COMPLEX_TYPE
+%token STRING_TYPE
 // Mathematical operators
 %token PLUS
 %token MINUS
@@ -50,13 +53,16 @@ statement:
   ;
 
 type_expr:
-  | INT_TYPE { TEInt }
-  | FLOAT_TYPE {TEFloat}
+  | INT_TYPE      { TEInt }
+  | FLOAT_TYPE    { TEFloat }
+  | COMPLEX_TYPE  { TEComplex }
+  | STRING_TYPE   { TEString }
 
 expr:
   | i=INT                     { Integer($startpos, i) }
   | f=FLOAT                   { Float($startpos, f) }
   | i=IMAGINARY               { Imaginary($startpos, i) }
+  | s=STRING                  { String($startpos, s) }
   | var_type=type_expr; var_name=ID; EQUAL; e=expr { Let($startpos, var_type, var_name, e)}
   | CONST; var_type=type_expr; var_name=ID; EQUAL; e=expr { Const($startpos, var_type, var_name, e)}
   | e1=expr op=bin_op e2=expr { BinaryOp($startpos, op, e1, e2) }
