@@ -27,6 +27,7 @@ module Var_name : ID = String_id
 type type_expr =
 | TEInt
 | TEFloat
+| TEComplex
 
 type bin_op =
   | BinOpAdd

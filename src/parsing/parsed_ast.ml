@@ -22,6 +22,7 @@ and show_expr = function
 and show_type_expr = function
   | TEInt -> "Int"
   | TEFloat -> "Float"
+  | TEComplex -> "Comp"
 and show_binop = function
   | BinOpAdd -> "+"
   | BinOpSub -> "-"

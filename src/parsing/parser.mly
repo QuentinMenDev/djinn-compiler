@@ -10,11 +10,13 @@
 %token <float> FLOAT
 %token <float> IMAGINARY
 %token <string> ID
+%token <string> STRING
 // Modifiers
 %token CONST
 // Types
 %token INT_TYPE
 %token FLOAT_TYPE
+%token COMPLEX_TYPE
 // Mathematical operators
 %token PLUS
 %token MINUS
@@ -50,8 +52,9 @@ statement:
   ;
 
 type_expr:
-  | INT_TYPE { TEInt }
-  | FLOAT_TYPE {TEFloat}
+  | INT_TYPE      { TEInt }
+  | FLOAT_TYPE    { TEFloat }
+  | COMPLEX_TYPE  { TEComplex }
 
 expr:
   | i=INT                     { Integer($startpos, i) }
