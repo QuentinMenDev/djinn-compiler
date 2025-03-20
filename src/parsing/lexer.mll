@@ -49,7 +49,7 @@ rule read =
   | float           { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
   | imaginary       { IMAGINARY (float_of_string (String.sub (Lexing.lexeme lexbuf) 0 ((String.length (Lexing.lexeme lexbuf)) - 1))) }
   | id              { ID (Lexing.lexeme lexbuf) }
-  | "'"             { read_string (Buffer.create 16) lexbuf }
+  | "'"             { read_string_single (Buffer.create 16) lexbuf }
   | '"'             { read_string (Buffer.create 16) lexbuf }
   | newline         { NEWLINE }
   | _               { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
@@ -59,6 +59,14 @@ and read_string buf = parse
   | [^ '"' '\\']+
     { Buffer.add_string buf (Lexing.lexeme lexbuf);
       read_string buf lexbuf
+    }
+  | _ { raise (SyntaxError ("Illegal string character: " ^ Lexing.lexeme lexbuf)) }
+  | eof { raise (SyntaxError ("String is not terminated")) }
+and read_string_single buf = parse
+  | "'" { STRING (Buffer.contents buf) }
+  | [^ '\'' '\\']+
+    { Buffer.add_string buf (Lexing.lexeme lexbuf);
+      read_string_single buf lexbuf
     }
   | _ { raise (SyntaxError ("Illegal string character: " ^ Lexing.lexeme lexbuf)) }
   | eof { raise (SyntaxError ("String is not terminated")) }
