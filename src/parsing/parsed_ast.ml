@@ -5,6 +5,7 @@ type expr =
   | Float       of tok_pos * float
   | Double      of tok_pos * float
   | Imaginary   of tok_pos * float
+  | Boolean     of tok_pos * string
   | String      of tok_pos * string
   | BinaryOp    of tok_pos * bin_op * expr * expr
   | Let         of tok_pos * type_expr * string * expr
@@ -19,6 +20,7 @@ and show_expr = function
   | Float (_, f) -> Printf.sprintf "Float(%f)" f
   | Double (_, d) -> Printf.sprintf "Float(%f)" d
   | Imaginary (_, num) -> Printf.sprintf "Imaginary(%f)" num
+  | Boolean (_, b) -> Printf.sprintf "String(%s)" b
   | String (_, s) -> Printf.sprintf "String(%s)" s
   | BinaryOp (_, op, e1, e2) -> Printf.sprintf "BinaryOp(%s, %s, %s)" (show_binop op) (show_expr e1) (show_expr e2)
   | Let (_, var_type, var_name, expr) -> Printf.sprintf "Let(%s, %s, %s)" (show_type_expr var_type) var_name (show_expr expr)
@@ -28,6 +30,7 @@ and show_type_expr = function
   | TEFloat -> "Float"
   | TEDouble -> "Double"
   | TEComplex -> "Comp"
+  | TEBoolean -> "Boolean"
   | TEString -> "String"
 and show_binop = function
   | BinOpAdd -> "+"

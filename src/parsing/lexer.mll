@@ -24,6 +24,8 @@ let number = int | float
 let imaginary = number 'i'
 let character = letter | special
 let string = character+
+let boolean = "true" | "false"
+(* Identifiers *)
 let id = letter (letter | digit | '_')*
 (* space *)
 let whitespace = [' ' '\t']
@@ -44,11 +46,13 @@ rule read =
   | "float"         { FLOAT_TYPE }
   | "double"        { DOUBLE_TYPE }  
   | "comp"          { COMPLEX_TYPE } (* ~ Complexe is imaginary + real. Needs a constructor ~ *)
+  | "bool"          { BOOLEAN_TYPE }
   | "string"        { STRING_TYPE }
   | whitespace      { read lexbuf }
   | unsigned_int    { INT (int_of_string (Lexing.lexeme lexbuf)) }
   | float           { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
   | imaginary       { IMAGINARY (float_of_string (String.sub (Lexing.lexeme lexbuf) 0 ((String.length (Lexing.lexeme lexbuf)) - 1))) }
+  | boolean         { BOOLEAN (Lexing.lexeme lexbuf) }
   | id              { ID (Lexing.lexeme lexbuf) }
   | "'"             { read_string_single (Buffer.create 16) lexbuf }
   | '"'             { read_string (Buffer.create 16) lexbuf }

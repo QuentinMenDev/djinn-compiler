@@ -10,6 +10,7 @@
 %token <float> FLOAT
 %token <float> DOUBLE
 %token <float> IMAGINARY
+%token <string> BOOLEAN
 %token <string> ID
 %token <string> STRING
 // Modifiers
@@ -19,6 +20,7 @@
 %token FLOAT_TYPE
 %token DOUBLE_TYPE
 %token COMPLEX_TYPE
+%token BOOLEAN_TYPE
 %token STRING_TYPE
 // Mathematical operators
 %token PLUS
@@ -59,6 +61,7 @@ type_expr:
   | FLOAT_TYPE    { TEFloat }
   | DOUBLE_TYPE   { TEDouble }
   | COMPLEX_TYPE  { TEComplex }
+  | BOOLEAN_TYPE  { TEBoolean }
   | STRING_TYPE   { TEString }
 
 expr:
@@ -66,6 +69,7 @@ expr:
   | f=FLOAT                   { Float($startpos, f) }
   | d=DOUBLE                  { Double($startpos, d) }
   | i=IMAGINARY               { Imaginary($startpos, i) }
+  | b=BOOLEAN                 { Boolean($startpos, b) }
   | s=STRING                  { String($startpos, s) }
   | var_type=type_expr; var_name=ID; EQUAL; e=expr { Let($startpos, var_type, var_name, e)}
   | CONST; var_type=type_expr; var_name=ID; EQUAL; e=expr { Const($startpos, var_type, var_name, e)}

@@ -29,6 +29,7 @@ type type_expr =
 | TEFloat
 | TEDouble
 | TEComplex
+| TEBoolean
 | TEString
 
 type bin_op =
