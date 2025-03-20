@@ -8,6 +8,7 @@
 /* Tokens declaration */
 %token <int> INT
 %token <float> FLOAT
+%token <float> DOUBLE
 %token <float> IMAGINARY
 %token <string> ID
 %token <string> STRING
@@ -16,6 +17,7 @@
 // Types
 %token INT_TYPE
 %token FLOAT_TYPE
+%token DOUBLE_TYPE
 %token COMPLEX_TYPE
 %token STRING_TYPE
 // Mathematical operators
@@ -55,12 +57,14 @@ statement:
 type_expr:
   | INT_TYPE      { TEInt }
   | FLOAT_TYPE    { TEFloat }
+  | DOUBLE_TYPE   { TEDouble }
   | COMPLEX_TYPE  { TEComplex }
   | STRING_TYPE   { TEString }
 
 expr:
   | i=INT                     { Integer($startpos, i) }
   | f=FLOAT                   { Float($startpos, f) }
+  | d=DOUBLE                  { Double($startpos, d) }
   | i=IMAGINARY               { Imaginary($startpos, i) }
   | s=STRING                  { String($startpos, s) }
   | var_type=type_expr; var_name=ID; EQUAL; e=expr { Let($startpos, var_type, var_name, e)}

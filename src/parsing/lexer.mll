@@ -42,6 +42,7 @@ rule read =
   | "const"         { CONST }
   | "int"           { INT_TYPE }
   | "float"         { FLOAT_TYPE }
+  | "double"        { DOUBLE_TYPE }  
   | "comp"          { COMPLEX_TYPE } (* ~ Complexe is imaginary + real. Needs a constructor ~ *)
   | "string"        { STRING_TYPE }
   | whitespace      { read lexbuf }

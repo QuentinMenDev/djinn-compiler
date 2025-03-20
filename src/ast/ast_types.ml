@@ -27,6 +27,7 @@ module Var_name : ID = String_id
 type type_expr =
 | TEInt
 | TEFloat
+| TEDouble
 | TEComplex
 | TEString
 
