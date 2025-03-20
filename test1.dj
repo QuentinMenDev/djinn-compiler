@@ -4,3 +4,4 @@ double c = 10.0
 bool myBool = false
 string myString = "This is a string"
 string newString = 'This is another string'
+frac myFraction = 1/2

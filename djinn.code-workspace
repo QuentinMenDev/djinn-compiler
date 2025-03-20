@@ -1,31 +1,30 @@
 {
-  "folders": [
-    {
-      "path": ".",
-      "name": "root"
-    },
-    {
-      "path": "src",
-      "name": "compiler"
-    },
-    {
-      "path": "benchmarks",
-      "name": "benchmarks"
-    },
-    {
-      "path": "legacy",
-      "name": "legacy"
-    }
-  ],
-  "settings": {
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "files.associations": {
-      "*.xml": "html",
-      "*.svg": "html"
-    },
-    "ocaml.sandbox": {
-      "kind": "opam",
-      "switch": "4.13.1"
-    }
-  }
+	"folders": [
+		{
+			"path": ".",
+			"name": "root"
+		},
+		{
+			"path": "src",
+			"name": "compiler"
+		},
+		{
+			"path": "benchmarks",
+			"name": "benchmarks"
+		},
+		{
+			"path": "legacy",
+			"name": "legacy"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"files.associations": {
+			"*.xml": "html",
+			"*.svg": "html"
+		},
+		"ocaml.sandbox": {
+			"kind": "global"
+		}
+	}
 }

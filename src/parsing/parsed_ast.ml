@@ -18,7 +18,7 @@ let rec show_statement = function
 and show_expr = function
   | Integer (_, i) -> Printf.sprintf "Integer(%d)" i
   | Float (_, f) -> Printf.sprintf "Float(%f)" f
-  | Double (_, d) -> Printf.sprintf "Float(%f)" d
+  | Double (_, d) -> Printf.sprintf "Double(%f)" d
   | Imaginary (_, num) -> Printf.sprintf "Imaginary(%f)" num
   | Boolean (_, b) -> Printf.sprintf "String(%s)" b
   | String (_, s) -> Printf.sprintf "String(%s)" s

@@ -21,6 +21,7 @@ let unsigned_int = digit+
 let int = unsigned_int
 let float = int '.' digit+
 let number = int | float
+let fraction = number '/' number
 let imaginary = number 'i'
 let character = letter | special
 let string = character+
@@ -44,7 +45,7 @@ rule read =
   | "const"         { CONST }
   | "int"           { INT_TYPE }
   | "float"         { FLOAT_TYPE }
-  | "double"        { DOUBLE_TYPE }  
+  | "double"        { DOUBLE_TYPE }
   | "comp"          { COMPLEX_TYPE } (* ~ Complexe is imaginary + real. Needs a constructor ~ *)
   | "bool"          { BOOLEAN_TYPE }
   | "string"        { STRING_TYPE }
